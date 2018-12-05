@@ -1,0 +1,167 @@
+---
+title: "data analysis"
+author: "Robert Kettenstock"
+date: "11/27/2018"
+output: html_document
+---
+
+```{r}
+View(eights2)
+```
+
+
+```{r}
+eights2$V4 <- eights2$V4 + 2.5
+weights <- eights2[,4]
+weights2 <- as.numeric(as.character(weights))
+mean(weights2)
+weightavg_late <- mean(weights2[1:184],na.rm=T)
+weightavg_early <- mean(weights2[185:384], na.rm=T)
+```
+
+assign "weights" to be the fourth column of the eights2 dataset
+assign "weights2" to be the numeric values of weights
+mean of weights2 displays the mean for the whole column
+"weightavg_late" and "weightavg_early" becomes the mean of rows 1-184 and 185-384 respectively
+na.rm is accounting for NA values that we have
+
+```{r}
+weightavg_early
+```
+
+```{r}
+weightavg_late
+```
+
+```{r}
+weight_late <- eights2[1:184,4]
+weight_early <- eights2[185:384,4]
+```
+
+
+```{r}
+weight_late <- as.numeric(as.character(weight_late))
+weight_early <- as.numeric(as.character(weight_early))
+boxplot(weight_late, weight_early, main = "Weight of seeds of Early vs Late Populations", ylab = "Late      Early", xlab = "Weight (g)", varwidth = TRUE, horizontal = TRUE)
+```
+
+creates a boxplot that consists of the numeric values in weight_early and weight_late, flipped horizontally
+
+```{r}
+grep("Yellow", eights2$V1)
+cnt <- 1
+for (i in eights2$V1) {
+  cnt <- cnt + 1
+  if(cnt > 1 && cnt < 386) {
+    print(grep("Yellow", i))
+  } else {break}
+}
+```
+
+pattern: "Yellow", "Pink", "Orange", "Avocado"
+"A" - "H"
+x: eights2
+weights: $V4
+
+```{r}
+average <- function(x){
+  sum.value <- 0
+  i <- 1
+  while ( i <= length(x)){
+    sum.value = sum.value + x[i]
+    i <- i + 1
+  }
+  avg <- sum.value/length(x)
+  return(avg)
+}
+```
+
+mean divide sum.value by i
+
+```{r}
+grep("Yellow", eights2$V1)
+Yellow_Rows <- grep("Yellow", eights2$V1)
+
+eights2$V4 <- as.numeric(as.character(eights2$V4))
+```
+
+
+```{r}
+Yellow_Weight <- seq(1:length(Yellow_Rows))
+for (p in seq(1:length(Yellow_Rows))) {
+  for (i in Yellow_Rows) {
+  Yellow_Weight[[p]] <- eights2[i, 4]
+  }}
+
+Yellow_Weight
+for (i in Yellow_Rows) {
+  assign(eights2[i, 4], Yellow_Weight[i,])
+
+}
+for (p in seq(1:96)) {
+  print(p)
+}
+```
+
+
+```{r}
+x[[5]] <- 26
+x
+```
+
+```{r}
+Yellow_Weight <- numeric(length(Yellow_Rows))
+for(i in seq(along=Yellow_Weight)) {
+	Yellow_Weight[i] <- as.numeric(eights2[i,4])
+}
+Yellow_Weight
+
+for(i in Yellow_Rows) {
+  print(i)
+}
+
+```
+
+```{r}
+eights2[-c(1),]
+eights2 <- eights2[-c(1),]
+eights3 <- eights2[order(eights2$V1),]
+#correct seed weight
+
+View(eights3)
+
+```
+
+
+```{r}
+rownames(eights3) <- NULL
+new_weights <- eights3[,4]
+new_weights2 <- as.numeric(as.character(new_weights))
+mean(new_weights2)
+weightavg_Yellow <- mean(new_weights2[289:384],na.rm=T)
+weightavg_Pink <- mean(new_weights2[193:288], na.rm=T)
+weightavg_Orange <- mean(new_weights2[97:192], na.rm=T)
+weightavg_Avocado <- mean(new_weights2[1:96], na.rm=T)
+
+```
+
+```{r}
+Weight_Yellow <- eights3[289:384,4]
+Weight_Orange <- eights3[97:192,4]
+Weight_Pink <- eights3[193:288,4]
+Weight_Avocado <- eights3[1:96,4]
+
+```
+
+```{r}
+Weight_Yellow <- as.numeric(as.character(Weight_Yellow))
+Weight_Pink <- as.numeric(as.character(Weight_Pink))
+Weight_Orange <- as.numeric(as.character(Weight_Orange))
+Weight_Avocado <- as.numeric(as.character(Weight_Avocado))
+```
+
+```{r}
+boxplot(Weight_Yellow, Weight_Pink, Weight_Avocado, Weight_Orange, names=c("Yellow", "Pink", "Avocado", "Orange"), main= "RAD-seq Growth Room Seed Weights", ylab= "Seed Weights (g)", xlab= "Shelf", col = c("yellow", "deeppink1", "olivedrab3", "orange"))
+```
+
+
